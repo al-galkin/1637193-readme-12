@@ -52,7 +52,7 @@ Debitis, vitae? Voluptas ducimus, odit molestiae tenetur provident nihil non? Mo
  * @param $length int длина строки для сравнения с данной длиной текста
  * @return string Возвращает заданный текст, если он меньше заданной длины $length и сокращает, если больше. В случае сокращения добавляется еще один тег с ссылкой «Читать далее».
  */
-function adjust_text_length(string $text, int $length): string
+function adjust_text_length($text, $length):
 {
     if (mb_strlen($text, 'utf-8') < $length) {
         return $text;
@@ -67,7 +67,7 @@ function adjust_text_length(string $text, int $length): string
             }
         }
         $new_text = implode(' ', $temp);
-        return $new_text . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        return "<p>" . $new_text . "...</p>" . '<a class="post-text__more-link" href="#">Читать далее</a>';
     }
 }
 
