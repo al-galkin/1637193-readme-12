@@ -15,7 +15,11 @@ $posts = [
     [
         'title' => 'Игра престолов',
         'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала! Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Veritatis alias quam aperiam, earum sunt, nulla id quis cum totam eaque deleniti qui eligendi nisi beatae? Nisi reprehenderit debitis error voluptate.
+Nulla doloribus repudiandae velit dolore distinctio assumenda nihil, sequi ipsa tenetur dolores, aliquam saepe numquam magni mollitia exercitationem eveniet atque accusamus expedita molestias vero qui non! Voluptate aperiam dolores assumenda.
+Sunt nihil in, similique vero laborum id exercitationem. Ratione corrupti eum voluptate itaque, dolorem temporibus doloremque voluptatum incidunt odio animi officiis ipsa ullam dignissimos. Accusantium omnis, eius reiciendis nesciunt vero!
+Debitis, vitae? Voluptas ducimus, odit molestiae tenetur provident nihil non? Molestias labore praesentium commodi at sint nisi omnis! Vitae voluptas quod facere necessitatibus eum nemo, optio excepturi quasi, perspiciatis at.
+',
         'name' => 'Владик',
         'avatar' => 'userpic.jpg'
     ],
@@ -41,6 +45,32 @@ $posts = [
         'avatar' => 'userpic.jpg'
     ]
 ];
+
+/**
+ * Функция сравнивает текст $text с заданной длиной $length.
+ * @param $text string текст, длина которого проверяется с значением $length
+ * @param $length int длина строки для сравнения с данной длиной текста
+ * @return string Возвращает заданный текст, если он меньше заданной длины $length и сокращает, если больше. В случае сокращения добавляется еще один тег с ссылкой «Читать далее».
+ */
+function adjust_text_length(string $text, int $length): string
+{
+    if (mb_strlen($text, 'utf-8') < $length) {
+        return $text;
+    } else {
+        $temp_text = explode(' ', $text);
+        $temp_length = 0;
+        $temp = [];
+        foreach ($temp_text as $key_word => $word) {
+            $temp_length += mb_strlen($word, 'utf-8') + 1;
+            if ($temp_length <= $length) {
+                $temp[] = $word;
+            }
+        }
+        $new_text = implode(' ', $temp);
+        return $new_text . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -347,7 +377,7 @@ $posts = [
                             </blockquote>
                         <?php elseif ($post['type'] === 'post-text'): ?>
                             <!--содержимое для поста-текста-->
-                            <p><!--здесь текст--><?= $post['content']; ?></p>
+                            <p><!--здесь текст--><?= adjust_text_length($post['content'], 300); ?></p>
                         <?php elseif ($post['type'] === 'post-photo'): ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
